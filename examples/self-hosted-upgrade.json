@@ -1,0 +1,75 @@
+{
+  "run_name": "self-hosted-upgrade",
+  "repo": ".",
+  "base": "main",
+  "worktree_root": "",
+  "max_parallel": 2,
+  "agent": {
+    "cli": "kimi",
+    "work_dir_arg": "--work-dir",
+    "args": ["--print", "--yolo", "--input-format", "text", "--final-message-only"],
+    "prompt_mode": "stdin",
+    "prompt_arg": "",
+    "log_name": "agent.log",
+    "timeout_seconds": 7200
+  },
+  "preflight": [
+    {
+      "name": "git-clean",
+      "command": "test -z \"$(git status --short)\""
+    },
+    {
+      "name": "tooling",
+      "command": "command -v git >/dev/null && command -v kimi >/dev/null"
+    },
+    {
+      "name": "disk-headroom",
+      "command": "df -Pk . | awk 'NR==2 {exit ($4 < 10485760)}'"
+    }
+  ],
+  "backups": [
+    {
+      "name": "compose-inventory",
+      "condition": "test -f compose.yml || test -f compose.yaml || test -f docker-compose.yml",
+      "command": "mkdir -p backups && docker compose config > backups/compose-${RUN_ID}.yaml && docker compose ps --services > backups/compose-services-${RUN_ID}.txt"
+    },
+    {
+      "name": "docker-image-inventory",
+      "condition": "command -v docker >/dev/null 2>&1 && docker images -q | grep -q .",
+      "command": "mkdir -p backups && docker images --digests > backups/docker-images-${RUN_ID}.txt && test -s backups/docker-images-${RUN_ID}.txt"
+    },
+    {
+      "name": "lxc-snapshots",
+      "condition": "command -v lxc >/dev/null 2>&1 && lxc list --format csv -c n | grep -q .",
+      "command": "lxc list --format csv -c n | while read -r name; do [ -n \"$name\" ] && lxc snapshot \"$name\" \"pre-agent-${RUN_ID}\"; done"
+    }
+  ],
+  "tasks": [
+    {
+      "name": "compose-upgrade-plan",
+      "branch": "compose-upgrade-plan",
+      "condition": "test -f compose.yml || test -f compose.yaml || test -f docker-compose.yml",
+      "prompt": "You are working in an isolated git worktree. Inspect the Docker Compose stack and propose the smallest safe upgrade plan. Edit only compose files, docs, tests, and the changelog or .worker-runs/changelog/compose-upgrade-plan.md fragment directly related to the stack. Do not touch secrets or run live destructive service mutations. Commit your changes and report the commit SHA, changed files, changelog path or fragment, verification commands, and risks.",
+      "verify": ["git status --short", "git log --oneline -1"]
+    },
+    {
+      "name": "container-docs-and-runbook",
+      "branch": "container-docs-and-runbook",
+      "condition": "test -d docs || test -f README.md",
+      "prompt": "You are working in an isolated git worktree. Write or update a runbook for the self-hosted service upgrade path, including backup verification, rollback notes, post-upgrade health checks, and a changelog or .worker-runs/changelog/container-docs-and-runbook.md fragment. Do not edit runtime config files. Commit your changes and report the commit SHA, changed files, changelog path or fragment, verification commands, and risks.",
+      "verify": ["git status --short", "git log --oneline -1"]
+    }
+  ],
+  "postflight": [
+    {
+      "name": "worktree-list",
+      "command": "git worktree list"
+    }
+  ],
+  "rollback": [
+    {
+      "name": "manual-rollback",
+      "command": "echo \"Inspect backups under backups/ and restore affected Docker/LXC/VM services manually after review.\""
+    }
+  ]
+}
