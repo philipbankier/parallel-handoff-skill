@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Manage CLI-agent workers in git worktrees.
 
-The default CLI is Kimi because this package ships with Kimi examples, but every
-CLI command is configurable with --agent-cli and --agent-args.
+The default CLI is Codex CLI (codex --full-auto). Override with --agent-cli.
+Every CLI command is configurable with --agent-cli and --agent-args.
 """
 
 from __future__ import annotations

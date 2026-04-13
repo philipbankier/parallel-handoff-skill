@@ -11,8 +11,8 @@ import sys
 from pathlib import Path
 from typing import Any, NoReturn, cast
 
-DEFAULT_AGENT_CLI = "kimi"
-DEFAULT_AGENT_ARGS = ["--print", "--yolo", "--input-format", "text"]
+DEFAULT_AGENT_CLI = "codex"
+DEFAULT_AGENT_ARGS = ["--full-auto"]
 DEFAULT_AGENT_WORK_DIR_ARG = "--work-dir"
 DEFAULT_AGENT_LOG_NAME = "agent.log"
 DEFAULT_AGENT_PROMPT_MODE = "stdin"

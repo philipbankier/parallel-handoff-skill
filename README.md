@@ -1,5 +1,11 @@
 # parallel-handoff
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](CHANGELOG.md)
+[![Claude Code](https://img.shields.io/badge/platform-Claude%20Code-blueviolet.svg)](https://docs.anthropic.com/en/docs/claude-code)
+[![OpenClaw](https://img.shields.io/badge/platform-OpenClaw-orange.svg)](https://github.com/openclaw)
+[![AgentSkills](https://img.shields.io/badge/spec-AgentSkills-green.svg)](https://agentskills.io)
+
 **Plan → parallel workers in git worktrees → per-worker supervisor loop → review → integrate.**
 
 Merges the best of two skills:
@@ -63,7 +69,7 @@ bash install.sh
 - **Worktree isolation** — Each worker gets its own git branch + worktree, no conflicts
 - **Per-worker supervisor loop** — Workers retry independently with correction prompts
 - **Scorecard review** — Structured review with DONE/PARTIAL/MISSING/ERROR status
-- **Harness-portable** — Works with Codex CLI, Claude Code, Kimi, OpenCode, Pi, or any CLI agent
+- **Harness-portable** — Works with Codex CLI, Claude Code, OpenCode, Pi, or any CLI agent
 - **Deterministic loops** — Generate auditable Bash/Python scripts for infrastructure work
 - **Phased execution** — Multi-phase plans with auto-detection
 - **Conflict-safe integration** — Merge strategies with conflict resolution guidance

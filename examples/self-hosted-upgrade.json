@@ -5,9 +5,9 @@
   "worktree_root": "",
   "max_parallel": 2,
   "agent": {
-    "cli": "kimi",
+    "cli": "codex",
     "work_dir_arg": "--work-dir",
-    "args": ["--print", "--yolo", "--input-format", "text", "--final-message-only"],
+    "args": ["--full-auto"],
     "prompt_mode": "stdin",
     "prompt_arg": "",
     "log_name": "agent.log",
@@ -20,7 +20,7 @@
     },
     {
       "name": "tooling",
-      "command": "command -v git >/dev/null && command -v kimi >/dev/null"
+      "command": "command -v git >/dev/null && command -v codex >/dev/null"
     },
     {
       "name": "disk-headroom",

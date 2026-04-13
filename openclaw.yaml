@@ -1,6 +1,6 @@
 name: parallel-handoff
 version: 0.1.0
-description: Plan → parallel workers in git worktrees → supervisor loop → review → integrate
+description: Plan → parallel workers in git worktrees → per-worker supervisor loop → review → integrate
 author: Philip Bankier
 license: MIT
 skill_path: skills/parallel-handoff

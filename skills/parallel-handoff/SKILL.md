@@ -1,23 +1,24 @@
 ---
 name: parallel-handoff
-version: 0.1.0
 description: |
   Plan → parallel workers in git worktrees → per-worker supervisor loop → review → integrate.
   Use when: user says "hand off to codex", "run parallel workers", "parallel handoff",
+  "implement this plan", "parallelize these tasks", "use multiple agents",
   runs /parallel-handoff, or has a plan ready for automated execution with one or more
   CLI agent harnesses. Combines parallel-agent-worktree-skill + codex-handoff-skill.
-allowed-tools:
-  - Bash
-  - Read
-  - Glob
-  - Grep
+license: MIT
+compatibility: Requires git, tmux, and a CLI agent harness (Codex CLI recommended). Python 3 for helper scripts.
+metadata:
+  version: "0.1.0"
+  author: Philip Bankier
+allowed-tools: Bash Read Glob Grep
 ---
 
 # Parallel Handoff
 
 Coordinator supervises. CLI agents execute. Workers run in isolated git worktrees, each
 with its own supervisor loop (execute → review → decide → loop). Works with Codex CLI,
-Claude Code, Kimi, OpenCode, Pi, or any CLI agent harness.
+Claude Code, OpenCode, Pi, or any CLI agent harness.
 
 **Announce at start:** "Using parallel-handoff to orchestrate execution."
 
@@ -32,6 +33,16 @@ Claude Code, Kimi, OpenCode, Pi, or any CLI agent harness.
 - Every worker must update the changelog or write a unique fragment.
 - Final integration merges back to the branch checked out at preflight.
 - For infrastructure work, use deterministic loops with backup gates.
+
+## Gotchas
+
+- Codex `--full-auto` can delete or overwrite files — always review diffs before integrating
+- Worktrees on macOS (case-insensitive) may behave differently than Linux (case-sensitive) — check file names
+- tmux sessions persist after agent crashes — check `tmux ls` and clean up stale sessions
+- Agent CLI flags change between versions — always verify with `<cli> --help` during preflight
+- Codex `--full-auto` does NOT require `-s workspace-write` — that's an older flag
+- Git worktrees share the same `.git` directory — hooks and config affect all worktrees
+- Parallel workers editing the same lockfile (package-lock.json, etc.) will cause merge conflicts — assign lockfile ownership to one worker
 
 ## Execution Modes
 

@@ -3,7 +3,7 @@
 Use this reference when parallel agents should be launched by explicit logic instead of
 an interactive instruction. The pattern is: build an auditable plan, pass every gate,
 create isolated worktrees, run non-interactive CLI-agent workers, verify results, then
-decide what to merge. The included sample plan uses Kimi CLI only as one harness
+decide what to merge. The included sample plan uses Codex CLI as the default harness
 mapping; the renderer itself reads a generic `agent` block.
 
 ## When To Use This Path
@@ -38,9 +38,9 @@ The renderer expects a JSON object:
   "worktree_root": "",
   "max_parallel": 2,
   "agent": {
-    "cli": "kimi",
+    "cli": "codex",
     "work_dir_arg": "--work-dir",
-    "args": ["--print", "--yolo", "--input-format", "text", "--final-message-only"],
+    "args": ["--full-auto"],
     "prompt_mode": "stdin",
     "prompt_arg": "",
     "log_name": "agent.log",

@@ -1,7 +1,7 @@
 # Harness Portability
 
 Use this reference before running or converting the skill for any harness other than
-the bundled Kimi CLI example. The parent agent must resolve the target CLI at runtime;
+the default Codex CLI. The parent agent must resolve the target CLI at runtime;
 this package deliberately does not hardcode every possible agent harness.
 
 ## Runtime Mapping Rule
@@ -41,8 +41,7 @@ Record these facts in the conversion report:
 
 Generated loops support three prompt modes:
 
-- `stdin`: writes the task prompt to standard input. This is the bundled Kimi sample
-  default.
+- `stdin`: writes the task prompt to standard input. This is the default Codex CLI mode.
 - `argument`: appends the task prompt as an argument. If `agent.prompt_arg` is set, the
   flag is inserted before the prompt text.
 - `file`: appends the generated prompt-file path. If `agent.prompt_arg` is set, the
@@ -83,12 +82,12 @@ report the blocker.
 A converted skill is not ready until:
 
 - README, `SKILL.md`, references, examples, scripts, tests, and poster copy no longer
-  imply Kimi-compatible syntax.
+  imply Codex CLI-specific syntax.
 - `examples/self-hosted-upgrade.json` uses the target harness mapping.
 - Generated Python and Bash scripts syntax-check.
 - Fake-harness tests cover prompt mode, work-dir mode, failure, rollback, and stale
   source-harness scans.
-- The converter report explains any remaining mentions of Kimi, Codex, Claude Code, or
+- The converter report explains any remaining mentions of Codex, Claude Code, or
   another specific CLI.
 - The final stage prompt has been run:
 
